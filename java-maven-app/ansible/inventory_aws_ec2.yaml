@@ -1,0 +1,14 @@
+---
+#plugin configuration file
+plugin: aws_ec2
+inventory:
+  - us-east-2
+  
+#filters:
+ # tag:Name: prod*
+  #instance-state-name: running
+
+#allows to display the instances by group based on tag
+keyed_groups:
+  - key: tags
+    prefix: "tag"
