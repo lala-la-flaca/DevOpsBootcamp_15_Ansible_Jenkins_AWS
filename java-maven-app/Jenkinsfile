@@ -15,7 +15,7 @@ pipeline {
                         sshagent(['ansible-server-key']){                        
                             sh "scp -o StrictHostKeyChecking=no ansible/* root@${ANSIBLE_SERVER}:/root"
                             withCredentials([sshUserPrivateKey(credentialsId: 'ansible-ec2-key', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
-                                sh 'scp $keyfile root@104.236.120.4:/root/ssh-key.pem'
+                                sh "scp ${keyfile} root@${ANSIBLE_SERVER}:/root/ssh-key.pem"
                             }                 
 
                         }
