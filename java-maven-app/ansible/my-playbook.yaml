@@ -1,0 +1,35 @@
+---
+- name: Install Docker
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    - name: Installing docker
+      yum: 
+        name: docker
+        update_cache: yes
+        state: present
+
+    - name: Starting docker daemon
+      systemd:
+        name: docker
+        state: started
+
+- name: Installing Docker-Compose
+  hosts: all
+  tasks:
+    - name: Creating docker-compose directory
+      file:
+          path: ~/.docker/cli-plugins
+          state: directory
+    - name: Getting architecture of remote machine
+      shell: uname -m
+      register: remote_arch
+    
+    - debug: msg={{remote_arch.stdout}}
+
+    - name: Installing docker-compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-{{ remote_arch.stdout }}"
+        dest: ~/.docker/cli-plugins/docker-compose
+        mode: +x
