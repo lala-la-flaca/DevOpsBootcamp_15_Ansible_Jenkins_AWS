@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment{
-        //ANSIBLE_SERVER = "167.172.30.107"
-        ANSIBLE_SERVER = "104.236.21.176"
+        ANSIBLE_SERVER = "167.172.30.107"
+        //ANSIBLE_SERVER = "104.236.21.176"
     }
    
     stages {        
