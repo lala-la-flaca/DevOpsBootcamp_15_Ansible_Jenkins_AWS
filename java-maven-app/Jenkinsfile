@@ -35,21 +35,37 @@ pipeline {
                     echo "executing ansible playbook to ocnfigure ec2"
                     //remote plugin allows us to execute commands on the remote server
                     //define remote object
-                    def remote = [:]
-                    remote.name = "ansible-server"
-                    remote.host = ANSIBLE_SERVER
-                    remote.allowAnyHosts = true
+                    //def remote = [:]
+                    //remote.name = "ansible-server"
+                    //remote.host = ANSIBLE_SERVER
+                    //remote.allowAnyHosts = true
 
                     //executing commands on ansible server (Droplet)
-                    withCredentials([sshUserPrivateKey(credentialsId: 'ansible-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
+                   //withCredentials([sshUserPrivateKey(credentialsId: 'ansible-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
 
-                        remote.user = user
-                        remote.identityFile = keyfile
+                       // remote.user = user
+                        //remote.identityFile = keyfile
 
-                        sshScript remote: remote, script: "java-maven-app/prepare-ansible-server.sh"
-                        sshCommand remote: remote, command: "ls -l"
-                        sshCommand remote: remote, command: "ansible-playbook /root/my-playbook.yaml"         
-                    }  
+                        //sshScript remote: remote, script: "java-maven-app/prepare-ansible-server.sh"
+                        //sshCommand remote: remote, command: "ls -l"
+                        //sshCommand remote: remote, command: "ansible-playbook /root/my-playbook.yaml"         
+                   // }  
+
+                   sshagent (credentials:['ansible-server-key'] ){
+                    
+                        withCredentials([[
+                                $class: 'AmazonWebServicesCredentialsBinding',
+                                credentialsId: 'aws-ansible-creds' // Jenkins “AWS credentials” type
+                                ]]) {
+                                    sh """
+                                    ssh -o StrictHostKeyChecking=no root@${ANSIBLE_SERVER} \\
+                                        'AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \\
+                                        AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \\
+                                        AWS_DEFAULT_REGION="us-east-2" \\
+                                        ansible-playbook -i /root/inventory_aws_ec2.yaml /root/my-playbook.yaml -vv'
+                                    """
+                                    }
+                    }
                 }
             }
         }
