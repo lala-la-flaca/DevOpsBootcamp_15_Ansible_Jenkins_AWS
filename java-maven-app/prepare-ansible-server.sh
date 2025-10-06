@@ -23,5 +23,7 @@ ansible-galaxy collection install amazon.aws
 chmod 600 /root/ssh-key.pem || true
 
 ansible --version
-aws --version
 
+#Checking AWS CLI
+aws --version
+aws sts get-caller-identity
