@@ -20,10 +20,11 @@ ansible-galaxy collection install amazon.aws
 
 
 # SSH key perms (assumes Jenkins copied it to /root)
-chmod 600 /root/ssh-key.pem || true
+chmod 400 /root/ssh-key.pem || true
 
 ansible --version
 
 #Checking AWS CLI
+echo "Checking AWS CLI"
 aws --version
 aws sts get-caller-identity

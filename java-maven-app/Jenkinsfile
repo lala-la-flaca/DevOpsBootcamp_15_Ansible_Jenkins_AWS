@@ -12,10 +12,14 @@ pipeline {
                    echo "copying all neccesary files to ansible server"
                    dir('java-maven-app'){
 
-                        sshagent(['ansible-server-key']){                        
+                        sshagent(['ansible-server-key']){  
+
+                            //copying ansible files to remote droplet                      
                             sh "scp -o StrictHostKeyChecking=no ansible/* root@${ANSIBLE_SERVER}:/root"
+
+                            //Saving AWS PEM file in to keyfile variable, which allows to copy file in the remote server(droplet)
                             withCredentials([sshUserPrivateKey(credentialsId: 'ansible-ec2-key', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
-                                sh "scp ${keyfile} root@${ANSIBLE_SERVER}:/root/ssh-key.pem"
+                                sh 'scp $keyfile root@$ANSIBLE_SERVER:/root/ssh-key.pem'
                             }                 
 
                         }
@@ -29,10 +33,14 @@ pipeline {
             steps{
                 script{
                     echo "executing ansible playbook to ocnfigure ec2"
+                    //remote plugin allows us to execute commands on the remote server
+                    //define remote object
                     def remote = [:]
                     remote.name = "ansible-server"
                     remote.host = ANSIBLE_SERVER
                     remote.allowAnyHosts = true
+
+                    //executing commands on ansible server (Droplet)
                     withCredentials([sshUserPrivateKey(credentialsId: 'ansible-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
 
                         remote.user = user
@@ -40,7 +48,7 @@ pipeline {
 
                         sshScript remote: remote, script: "java-maven-app/prepare-ansible-server.sh"
                         sshCommand remote: remote, command: "ls -l"
-                        sshCommand remote: remote, command: "ansible-playbook my-playbook.yaml"         
+                        sshCommand remote: remote, command: "ansible-playbook /root/my-playbook.yaml"         
                     }  
                 }
             }
