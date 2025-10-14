@@ -4,7 +4,7 @@ This exercise is part of Module 15 from the TWN DevOps Bootcamp. In Module 15, w
 
 ---
 <a id="demo7"></a>
-# 📦Demo 7 – Ansible integration in Jenkins
+# 📦Demo 7 – Ansible Integration in Jenkins
 # 📌 Objective
 
 
