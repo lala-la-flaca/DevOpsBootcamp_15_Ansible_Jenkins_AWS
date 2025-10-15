@@ -44,7 +44,7 @@ pipeline {
                     //Defining remote object
                     def remote = [:]
                     remote.name = "ansible-server"
-                    remote.host = ${ANSIBLE_SERVER}
+                    remote.host = "${ANSIBLE_SERVER}"
                     remote.allowAnyHosts = true
 
                     //using credentials to access ansible server    
