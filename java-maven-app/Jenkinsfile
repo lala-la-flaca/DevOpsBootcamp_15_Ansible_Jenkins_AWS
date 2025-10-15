@@ -55,8 +55,7 @@ pipeline {
 
                         //using credenrials from AWS plugin
                         aws(credentialsId: 'unicorn-aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')
-                    ]) 
-                        {
+                    ]){
                             remote.user = user
                             remote.identityFile = keyfile
                             sshCommand remote: remote, command: "ls -l"
@@ -69,10 +68,9 @@ pipeline {
 
                             sshCommand remote: remote, command: "ansible-playbook my-playbook.yaml"
                         }
-                    }
-
                 }
             }
         }
     }
-} 
+}
+ 
