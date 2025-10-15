@@ -19,11 +19,6 @@ if ! command -v aws &>/dev/null; then
     /tmp/aws/install --update
 fi
 
-#Checking AWS CLI
-echo "Checking AWS CLI"
-aws --version
-aws sts get-caller-identity
-
 #Creating credentials file
 mkdir -p ~/.aws
 chmod 700 ~/.aws
@@ -49,5 +44,12 @@ region = us-east-2
 output = json
 EOF
 chmod 600 ~/.aws/config
+
+echo "✅ AWS credentials configured"
+
+#Checking AWS CLI
+echo "Checking AWS CLI"
+aws --version
+aws sts get-caller-identity
 
 echo "✅ AWS credentials configured"
