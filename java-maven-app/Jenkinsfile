@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment{
-        ANSIBLE_SERVER = "161.35.191.19"
+        ANSIBLE_SERVER = "159.89.183.0"
     }
    
     stages {        
@@ -14,11 +14,16 @@ pipeline {
 
                         sshagent(['ansible-server-key']){  
 
-                            //copying ansible files to remote droplet                      
+                            //copying ansible files to remote droplet (ansible server)
+                            //Files: inventory, playbook, cfg                      
                             sh "scp -o StrictHostKeyChecking=no ansible/* root@${ANSIBLE_SERVER}:/root"
 
-                            //Saving AWS PEM file in to keyfile variable, which allows to copy file in the remote server(droplet)
+                            //Saving AWS PEM file in the keyfile variable
+                            // keyFileVariable --> Creates a temporary file with the credentials, then this file is copied to the ansible server
                             withCredentials([sshUserPrivateKey(credentialsId: 'ansible-ec2-key', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
+                                //insecure because with "" groovy exposes the pem file in command line
+                                //sh "scp ${keyfile} root@${ANSIBLE_SERVER}:/root/ssh-key.pem"
+                                //with single '', groovy uses the secret in a different way and does not exposes file.
                                 sh 'scp $keyfile root@$ANSIBLE_SERVER:/root/ssh-key.pem'
                             }                 
 
@@ -56,22 +61,21 @@ pipeline {
         stage("execute ansible playbook"){
             steps{
                 script{
-                   echo "executing ansible playbook to ocnfigure ec2" 
+                   echo "executing ansible playbook to configure ec2" 
 
-                   sshagent (credentials:['ansible-server-key'] ){
-                    
-                        withCredentials([[
-                                $class: 'AmazonWebServicesCredentialsBinding',
-                                credentialsId: 'aws-ansible-creds' // Jenkins “AWS credentials” type
-                                ]]) {
-                                    sh """
-                                    ssh -o StrictHostKeyChecking=no root@${ANSIBLE_SERVER} \\
-                                        'AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \\
-                                        AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \\
-                                        AWS_DEFAULT_REGION="us-east-2" \\
-                                        ansible-playbook -i /root/inventory_aws_ec2.yaml /root/my-playbook.yaml -vv'
-                                    """
-                                    }
+                    //using ssh pipeline plugin
+                    //Defining remote object
+                    def remote = [:]
+                    remote.name = "ansible-server"
+                    remote.host = ${ANSIBLE_SERVER}
+                    remote.allowAnyHosts = true
+
+                    //using credentials to access ansible server    
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ansible-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
+                        remote.user = user
+                        remote.identityFile = keyfile
+                        sshCommand remote: remote, command: "ls -l"
+                        sshCommand remote: remote, command: "ansible-playbook my-playbook.yaml"
                     }
                 }
             }
