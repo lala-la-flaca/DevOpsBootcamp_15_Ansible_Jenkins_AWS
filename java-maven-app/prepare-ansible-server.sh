@@ -11,6 +11,14 @@ chmod 400 /root/ssh-key.pem || true
 
 ansible --version
 
+# Install AWS CLI if missing
+if ! command -v aws &>/dev/null; then
+    echo "Installing AWS CLI v2..."
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
+    unzip -o /tmp/awscliv2.zip -d /tmp
+    /tmp/aws/install --update
+fi
+
 #Checking AWS CLI
 echo "Checking AWS CLI"
 aws --version
