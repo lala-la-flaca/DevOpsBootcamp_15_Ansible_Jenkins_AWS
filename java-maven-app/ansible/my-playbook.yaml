@@ -1,6 +1,6 @@
 ---
 - name: Install Docker
-  hosts: all
+  hosts: tag_Name_ansible-demo-FA
   become: yes
   become_user: root
   tasks:
@@ -16,7 +16,7 @@
         state: started
 
 - name: Installing Docker-Compose
-  hosts: all
+  hosts: tag_Name_ansible-demo-FA
   tasks:
     - name: Creating docker-compose directory
       file:
