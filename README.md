@@ -52,16 +52,24 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
 5. Connect to the Droplet and update all system packages.
 
    ```
+   ssh root@159.89.183.0
+   apt update
    ```
    <img src="" width=800 />
 7. Install Ansible and the required Python dependencies: boto3 and botocore.
   
    ```
+   apt install ansible-core
+   apt install python3-boto3
+   apt install python3-botocore
    ```
    <img src="" width=800 />
 9. Create the .aws directory and add a credentials file to store your AWS access keys.
   
    ```
+   mkdir .aws
+   cd .aws
+   vim credentials
    ```
    <img src="" width=800 />
    
@@ -166,6 +174,9 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
     <img src="" width=800 />
     
 19. Verify that Docker is installed and running on the EC2 instances.
+    ```
+    which docker
+    ```
     <img src="" width=800 />
     
 
