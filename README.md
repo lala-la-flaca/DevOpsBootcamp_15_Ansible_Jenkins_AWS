@@ -188,10 +188,12 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
 
 ## Ansible Server Automation
 To further automate the pipeline, we can automate the Ansible server configuration. As follows:
-1. Create a Mew Droplet.
+1. Create a new Droplet.
+
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/17%20fresh%20droplet.PNG" width=800/>
    
 2. Create a new AWS EC2 instance.
+   
  <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/18%20new%20AWS%20instances.PNG" width=800/>
  
 3. Modify the second stage to add the AWS Credentials, create a file with the credentials, and copy this file to the  droplet.
