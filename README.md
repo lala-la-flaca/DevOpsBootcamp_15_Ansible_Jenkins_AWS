@@ -77,8 +77,7 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
    
 ## Jenkins File Configuration
 1. Create a New branch in the Jenkins project's pipeline
-   <img src="" width=800 />
-   
+  
 3. Add a new Ansible directory to copy the files from the EC2-dynamic-inventory demo.
    
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/7%20create%20an%20ansible%20folder%20and%20add%20the%20ansible%20files%20inside.png" width=800/>
@@ -177,7 +176,7 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
     <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/14%20step%20execute%20ansible%20playbook.PNG" width=800 />
     
 17. Check the console output to confirm that the pipeline executed successfully.
-    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/15%20running%20playbook%20AWS%20OK.png" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/15%20running%20playbook%20AWS%20OK.png" width=1000 />
     
 19. Verify that Docker is installed and running on the EC2 instances.
     ```
