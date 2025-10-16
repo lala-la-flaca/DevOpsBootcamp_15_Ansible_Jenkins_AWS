@@ -6,6 +6,7 @@ This exercise is part of Module 15 from the TWN DevOps Bootcamp. In Module 15, w
 <a id="demo7"></a>
 # 📦Demo 7 – Ansible Integration in Jenkins
 # 📌 Objective
+Integrate Ansible execution into a Jenkins pipeline to automate the configuration of multiple EC2.
 
 
 # 🚀 Technologies Used
@@ -15,16 +16,25 @@ This exercise is part of Module 15 from the TWN DevOps Bootcamp. In Module 15, w
 * DigitalOcean: Cloud provider
 
 # 🎯 Features
-  ✅ Provisions EC2 instances using Terraform.<br>
-  🐳 Installs Docker & Docker Compose via Ansible.<br>
-  🧩 Deploy nginx application from a compose file.<br>
+  ✅ Jenkins triggers remote Ansible playbooks.<br>
+  🧩onfigures multiple servers from a single pipeline.<br>
+  
 
 # Prerequisites
 * AWS account with valid keys.
-* Terraform demo to deploy infrastructure.
-  Terraform files are available at: 🔗[demo/ansible-terraform](https://gitlab.com/devopsbootcamp4095512/devopsbootcamp_12_terraform_aws/-/tree/demo/ansible-terraform-2?ref_type=heads)
-  
+* For Ansible controller node:
+  * python >=3.6
+  * boto3 >= 1.26.0
+  * botocore >= 1.29.0
+* Python modules require these dependencies to execute the K8 module:
+  * python >= 3.6
+  * kubernetes >= 12.0.0
+  * PyYAML >= 3.11
+  * jsonpatch
+
 # 🏗 Project Architecture
+
+
 
 # ⚙️ Project Configuration
 
