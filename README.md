@@ -31,6 +31,10 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
   * kubernetes >= 12.0.0
   * PyYAML >= 3.11
   * jsonpatch
+* DigitalOcean account.
+* Demo from Dynamic Inventory
+* Jenkins server from module 8.
+  
 
 # 🏗 Project Architecture
 <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/Demo15-Jenkins.drawio.png" width=800 />
@@ -38,6 +42,61 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
 
 
 # ⚙️ Project Configuration
+## Setting up Infrastructure 
+1. Create a new DigitalOcean Droplet to host the Ansible control node.
+   <img src="" width=800 />
+   
+3. Launch two AWS EC2 instances to host the application.
+   <img src="" width=800 />
+  
+5. Connect to the Droplet and update all system packages.
 
-
+   ```
+   ```
+   <img src="" width=800 />
+7. Install Ansible and the required Python dependencies: boto3 and botocore.
+  
+   ```
+   ```
+   <img src="" width=800 />
+9. Create the .aws directory and add a credentials file to store your AWS access keys.
+  
+   ```
+   ```
+   <img src="" width=800 />
+   
+## Jenkins File Configuration
+1. Create a New branch in the Jenkins project's pipeline
+   <img src="" width=800 />
+   
+3. Add a Jenkinsfile to define the pipeline stages.
+   
+5. Create a stage to copy the Ansible files to the target Droplet.
+   ```
+   ```
+   <img src="" width=800 />
+   
+7. Verify that the SSH Agent plugin is installed and available in Jenkins.
+   <img src="" width=800 />
+   
+9. Add new credentials to store the SSH keys required for Ansible to access the EC2 instances.
+    <img src="" width=800 />
+    
+11. Create a new Jenkins pipeline and link it to the repository.
+    <img src="" width=800 />
+    
+13. Install the SSH Pipeline plugin in Jenkins if it’s not already installed.
+    <img src="" width=800 />
+    
+15. Add a second stage to run the Ansible playbook.
+    ```
+    ```
+    <img src="" width=800 />
+    
+17. Check the console output to confirm that the pipeline executed successfully.
+    <img src="" width=800 />
+    
+19. Verify that Docker is installed and running on the EC2 instances.
+    <img src="" width=800 />
+    
 
