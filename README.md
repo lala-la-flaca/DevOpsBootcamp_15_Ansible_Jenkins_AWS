@@ -70,9 +70,49 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
    <img src="" width=800 />
    
 3. Add a Jenkinsfile to define the pipeline stages.
+   ```
+     pipeline {   
+      agent any
+  
+      environment{
+          ANSIBLE_SERVER = "167.71.181.151"
+          AWS_REGION = 'us-east-2'
+      }
+     
+      stages {
+     }
+    }
+   ```
    
 5. Create a stage to copy the Ansible files to the target Droplet.
    ```
+    stage("copy files to ansible server") {
+            steps {
+                script {
+                   echo "copying all necessary files to Ansible server"
+                   dir('java-maven-app'){
+
+                        sshagent(['ansible-server-key']){  
+
+                            //copying Ansible files to the remote droplet (Ansible server)
+                            //Files: inventory, playbook, cfg                      
+                            sh "scp -o StrictHostKeyChecking=no ansible/* root@${ANSIBLE_SERVER}:/root"
+
+                            //Saving AWS PEM file in the keyfile variable
+                            // keyFileVariable --> Creates a temporary file with the credentials, then this file is copied to the Ansible server
+                            withCredentials([sshUserPrivateKey(credentialsId: 'ansible-ec2-key', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
+                                //insecure because with "" groovy exposes the pem file in the command line
+                                //sh "scp ${keyfile} root@${ANSIBLE_SERVER}:/root/ssh-key.pem"
+                                //with single '', Groovy uses the secret differently and does not expose the file.
+                                sh 'scp $keyfile root@$ANSIBLE_SERVER:/root/ssh-key.pem'
+                            }                 
+
+                        }
+                   }
+
+                }
+            }
+        }
    ```
    <img src="" width=800 />
    
@@ -90,6 +130,39 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
     
 15. Add a second stage to run the Ansible playbook.
     ```
+    stage("execute ansible playbook"){
+            steps{
+                script{
+                   echo "executing ansible playbook to configure ec2" 
+
+                    //using ssh pipeline plugin
+                    //Defining remote object
+                    def remote = [:]
+                    remote.name = "ansible-server"
+                    remote.host = "${ANSIBLE_SERVER}"
+                    remote.allowAnyHosts = true
+
+                     
+                    withCredentials([
+                        //using credentials to access ansible server
+                        sshUserPrivateKey(credentialsId: 'ansible-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user'),
+
+                        //using credenrials from AWS plugin
+                        aws(credentialsId: 'unicorn-aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')
+                    ]){
+                            remote.user = user
+                            remote.identityFile = keyfile
+                            sshCommand remote: remote, command: "ls -l"
+                            sshCommand remote: remote, command: 'echo "preparing ansible server:"'
+                            //sshScript remote: remote, script: "java-maven-app/prepare-ansible-server.sh"
+                            sshCommand remote: remote, command: \
+                            "AWS_ACCESS_KEY_ID='${AWS_ACCESS_KEY_ID}' AWS_SECRET_ACCESS_KEY='${AWS_SECRET_ACCESS_KEY}' bash -s < java-maven-app/prepare-ansible-server.sh"
+                            
+                            sshCommand remote: remote, command: "ansible-playbook my-playbook.yaml"
+                        }
+                }
+            }
+        }
     ```
     <img src="" width=800 />
     
