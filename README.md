@@ -188,3 +188,62 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
 
 ## Ansible Server Automation
 To further automate the pipeline, we can automate the Ansible server configuration. As follows:
+1. Create a Mew Droplet.
+   <img src="" width=800/>
+   
+2. Create a new AWS EC2 instance.
+ <img src="" width=800/>
+ 
+3. Modify the second stage to add the AWS Credentials, create a file with the credentials, and copy this file to the  droplet.
+   ```
+   stage("execute ansible playbook"){
+            steps{
+                script{
+                   echo "executing ansible playbook to configure ec2" 
+
+                    //using the SSH pipeline plugin
+                    //Defining remote object
+                    def remote = [:]
+                    remote.name = "ansible-server"
+                    remote.host = "${ANSIBLE_SERVER}"
+                    remote.allowAnyHosts = true
+
+                     
+                    withCredentials([
+                        //using credentials to access the Ansible server
+                        sshUserPrivateKey(credentialsId: 'ansible-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user'),
+
+                        //using credentials from AWS plugin
+                        aws(credentialsId: 'unicorn-aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')
+
+                    ]){
+                            remote.user = user
+                            remote.identityFile = keyfile
+                            sshCommand remote: remote, command: "ls -l"
+
+                            // Create .aws directory and write credentials securely on the Droplet
+                            def awsCredentials = """[default]
+                                                    aws_access_key_id=${AWS_ACCESS_KEY_ID}
+                                                    aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}
+                                                    region=${AWS_REGION}
+                                                    """
+                            writeFile file: 'aws-credentials', text: awsCredentials
+
+                            //Copy credentials to droplet
+                            sshagent(['ansible-server-key']) {
+                                sh "scp -o StrictHostKeyChecking=no aws-credentials root@${ANSIBLE_SERVER}:/root/.aws/credentials"
+                                sh "rm -f aws-credentials"
+                            }
+
+                            // Assign permission to file
+                            sshCommand remote: remote, command: "chmod 600 /root/.aws/credentials"
+   
+                            //Call Script to configure Ansible server.
+                            sshScript remote: remote, script: "java-maven-app/prepare-ansible-server.sh"
+                            sshCommand remote: remote, command: "ansible-playbook my-playbook.yaml"
+                        }
+                }
+            }
+        }
+   ```
+   <img src="" width=800 />
