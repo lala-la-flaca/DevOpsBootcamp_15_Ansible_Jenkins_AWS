@@ -144,20 +144,16 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
 
                      
                     withCredentials([
-                        //using credentials to access ansible server
+                        //using credentials to access the Ansible server
                         sshUserPrivateKey(credentialsId: 'ansible-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user'),
 
-                        //using credenrials from AWS plugin
+                        //using credentials from AWS plugin
                         aws(credentialsId: 'unicorn-aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')
                     ]){
                             remote.user = user
                             remote.identityFile = keyfile
                             sshCommand remote: remote, command: "ls -l"
-                            sshCommand remote: remote, command: 'echo "preparing ansible server:"'
-                            //sshScript remote: remote, script: "java-maven-app/prepare-ansible-server.sh"
-                            sshCommand remote: remote, command: \
-                            "AWS_ACCESS_KEY_ID='${AWS_ACCESS_KEY_ID}' AWS_SECRET_ACCESS_KEY='${AWS_SECRET_ACCESS_KEY}' bash -s < java-maven-app/prepare-ansible-server.sh"
-                            
+                            sshCommand remote: remote, command: 'echo "preparing ansible server:"'                            
                             sshCommand remote: remote, command: "ansible-playbook my-playbook.yaml"
                         }
                 }
