@@ -176,7 +176,7 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
     
 10. Check the console output to confirm that the pipeline executed successfully.
     
-    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/15%20running%20playbook%20AWS%20OK.png" width=1000 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/15%20running%20playbook%20AWS%20OK.png" width=800 />
     
 11. Verify that Docker is installed and running on the EC2 instances.
     
