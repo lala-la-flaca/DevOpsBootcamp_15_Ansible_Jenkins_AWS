@@ -33,6 +33,7 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
   * jsonpatch
 
 # 🏗 Project Architecture
+<img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/Demo15-Jenkins.drawio.png" width=800 />
 
 
 
