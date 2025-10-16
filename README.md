@@ -17,7 +17,7 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
 
 # 🎯 Features
   ✅ Jenkins triggers remote Ansible playbooks.<br>
-  🧩onfigures multiple servers from a single pipeline.<br>
+  🧩 Configures multiple servers from a single pipeline.<br>
   
 
 # Prerequisites
