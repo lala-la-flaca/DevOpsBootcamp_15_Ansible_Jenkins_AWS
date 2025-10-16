@@ -44,10 +44,10 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
 # ⚙️ Project Configuration
 ## Setting up Infrastructure 
 1. Create a new DigitalOcean Droplet to host the Ansible control node.
-   <img src="" width=800 />
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/1%20droplet.PNG" width=800 />
    
 3. Launch two AWS EC2 instances to host the application.
-   <img src="" width=800 />
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/2%20aws%20ec2%20instances.PNG" width=800 />
   
 5. Connect to the Droplet and update all system packages.
 
@@ -55,7 +55,8 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
    ssh root@159.89.183.0
    apt update
    ```
-   <img src="" width=800 />
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/3%20apt%20update%20and%20install%20ansible.png" width=800 />
+   
 7. Install Ansible and the required Python dependencies: boto3 and botocore.
   
    ```
@@ -63,7 +64,8 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
    apt install python3-boto3
    apt install python3-botocore
    ```
-   <img src="" width=800 />
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/4%20install%20boto3%20and%20botocore.png" width=800 />
+   
 9. Create the .aws directory and add a credentials file to store your AWS access keys.
   
    ```
@@ -71,13 +73,17 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
    cd .aws
    vim credentials
    ```
-   <img src="" width=800 />
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/5%20create%20aws%20hidden%20folder%20for%20credentials.png" width=800 />
    
 ## Jenkins File Configuration
 1. Create a New branch in the Jenkins project's pipeline
    <img src="" width=800 />
    
-3. Add a Jenkinsfile to define the pipeline stages.
+3. Add a new Ansible directory to copy the files from the EC2-dynamic-inventory demo.
+   
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/7%20create%20an%20ansible%20folder%20and%20add%20the%20ansible%20files%20inside.png" width=800/>
+   
+5. Add a Jenkinsfile to define the pipeline stages.
    ```
      pipeline {   
       agent any
@@ -92,7 +98,7 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
     }
    ```
    
-5. Create a stage to copy the Ansible files to the target Droplet.
+6. Create a stage to copy the Ansible files to the target Droplet.
    ```
     stage("copy files to ansible server") {
             steps {
@@ -122,19 +128,19 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
             }
         }
    ```
-   <img src="" width=800 />
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/8%20jenkins%20file%20stage%20copy%20files%20to%20ansible%20server.png" width=800 />
    
 7. Verify that the SSH Agent plugin is installed and available in Jenkins.
-   <img src="" width=800 />
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/9%20ssh%20plugin%20available%20in%20jenkins%20server.PNG" width=800 />
    
 9. Add new credentials to store the SSH keys required for Ansible to access the EC2 instances.
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/11%20add%20the%20ssh%20ansible%20key%20to%20access%20ec2.PNG" width=800 />
     
 11. Create a new Jenkins pipeline and link it to the repository.
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/12%20create%20a%20new%20jenkins%20pipeline.png" width=800 />
     
 13. Install the SSH Pipeline plugin in Jenkins if it’s not already installed.
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/13%20install%20plugin%20ssh%20pipeline.PNG" width=800 />
     
 15. Add a second stage to run the Ansible playbook.
     ```
@@ -168,15 +174,15 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
             }
         }
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/14%20step%20execute%20ansible%20playbook.PNG" width=800 />
     
 17. Check the console output to confirm that the pipeline executed successfully.
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/15%20running%20playbook%20AWS%20OK.png" width=800 />
     
 19. Verify that Docker is installed and running on the EC2 instances.
     ```
     which docker
     ```
-    <img src="" width=800 />
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/16%20docker%20installed.PNG" width=800 />
     
 
