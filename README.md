@@ -149,7 +149,7 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
                 script{
                    echo "executing ansible playbook to configure ec2" 
 
-                    //using ssh pipeline plugin
+                    //using the SSH pipeline plugin
                     //Defining remote object
                     def remote = [:]
                     remote.name = "ansible-server"
@@ -189,10 +189,10 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
 ## Ansible Server Automation
 To further automate the pipeline, we can automate the Ansible server configuration. As follows:
 1. Create a Mew Droplet.
-   <img src="" width=800/>
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/17%20fresh%20droplet.PNG" width=800/>
    
 2. Create a new AWS EC2 instance.
- <img src="" width=800/>
+ <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/18%20new%20AWS%20instances.PNG" width=800/>
  
 3. Modify the second stage to add the AWS Credentials, create a file with the credentials, and copy this file to the  droplet.
    ```
@@ -246,4 +246,4 @@ To further automate the pipeline, we can automate the Ansible server configurati
             }
         }
    ```
-   <img src="" width=800 />
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/19%20full%20auto.png" width=800 />
