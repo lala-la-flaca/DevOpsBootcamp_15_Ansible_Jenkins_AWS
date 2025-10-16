@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment{
-        ANSIBLE_SERVER = "159.89.183.0"
+        ANSIBLE_SERVER = "167.71.181.151"
         AWS_REGION = 'us-east-2'
     }
    
@@ -51,12 +51,35 @@ pipeline {
                      
                     withCredentials([
                         //using credentials to access ansible server
-                        sshUserPrivateKey(credentialsId: 'ansible-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user')
+                        sshUserPrivateKey(credentialsId: 'ansible-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user'),
+
+                        //using credenrials from AWS plugin
+                        aws(credentialsId: 'unicorn-aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')
 
                     ]){
                             remote.user = user
                             remote.identityFile = keyfile
                             sshCommand remote: remote, command: "ls -l"
+
+                            // Step 3a: Create .aws directory and write credentials securely
+                            def awsCredentials = """[default]
+                                                    aws_access_key_id=${AWS_ACCESS_KEY_ID}
+                                                    aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}
+                                                    region=${AWS_REGION}
+                                                    """
+                            writeFile file: 'aws-credentials', text: awsCredentials
+
+                            // Step 3b: Copy credentials to droplet
+                            sshagent(['ansible-server-key']) {
+                                sh "scp -o StrictHostKeyChecking=no aws-credentials root@${ANSIBLE_SERVER}:/root/.aws/credentials"
+                                sh "rm -f aws-credentials"
+                            }
+
+                            // Step 3c: Continue execution
+                            sshCommand remote: remote, command: "chmod 600 /root/.aws/credentials"
+
+
+                            sshScript remote: remote, script: "java-maven-app/prepare-ansible-server.sh"
                             sshCommand remote: remote, command: "ansible-playbook my-playbook.yaml"
                         }
                 }
