@@ -1,4 +1,4 @@
-This branch contains the files for Demo7- full automation, including Droplet.
+This branch contains the files for Demo7 - full pipeline automation, including Ansible Droplet.
 ```
 .
 └── java-maven-app
