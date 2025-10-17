@@ -8,6 +8,8 @@ This exercise is part of Module 15 from the TWN DevOps Bootcamp. In Module 15, w
 # 📌 Objective
 Integrate Ansible execution into a Jenkins pipeline to automate the configuration of multiple EC2.
 
+Files available in branch: feature/ansible 
+[Ansible_Demo7_Files](https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/tree/feature/ansible)
 
 # 🚀 Technologies Used
 * Ansible: Configuration management tool for automation.
@@ -187,7 +189,11 @@ Integrate Ansible execution into a Jenkins pipeline to automate the configuratio
     
 
 ## Ansible Server Automation
+Files available in branch: feature/ansible-b
+[Ansible_Demo7_Files](https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/tree/feature/ansible-b)
+
 To further automate the pipeline, we can automate the Ansible server configuration. As follows:
+
 1. Create a new Droplet.
 
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/17%20fresh%20droplet.PNG" width=800/>
