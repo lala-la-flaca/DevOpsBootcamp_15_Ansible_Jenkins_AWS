@@ -1,4 +1,5 @@
 This branch contains the files for Ansible Demo7:
+```
 .
 └── java-maven-app
     ├── ansible
@@ -22,3 +23,4 @@ This branch contains the files for Ansible Demo7:
                     └── index.html
 
 10 directories, 11 files
+```
