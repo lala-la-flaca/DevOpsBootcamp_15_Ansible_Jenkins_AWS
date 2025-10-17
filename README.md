@@ -1,4 +1,4 @@
-This branch contains the files for Ansible Demo7:
+This branch contains files for Ansible Demo7:
 ```
 .
 └── java-maven-app
