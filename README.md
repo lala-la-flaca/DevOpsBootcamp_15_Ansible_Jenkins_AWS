@@ -68,7 +68,7 @@ Files available in branch: feature/ansible
    ```
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_15_Ansible_Jenkins_AWS/blob/main/Img/4%20install%20boto3%20and%20botocore.png" width=800 />
    
-9. Create the .aws directory and add a credentials file to store your AWS access keys.
+9. Create the .aws directory and add a credentials file to store your AWS access keys for the dynamic inventory to work.
   
    ```
    mkdir .aws
